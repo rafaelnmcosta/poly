@@ -10,13 +10,22 @@ int write_poly(POLY poly, char* name, int size);
 
 int main(int argc, char const *argv[]){
 	POLY new_poly;
+	char * str_poly;
+	char * arq_name;
 
 	if(argc!=3){
 		printf("\n*!* Uso incorreto *!*\nUse a sintaxe ./pbuild <polinomio> <arquivo a ser salvo>\n");
 		return 0;
 	}
 
-	new_poly = build_poly(strlen(argv[1]), argv[1]);
+	strcpy(str_poly, argv[1]);
+	printf("\n%s\n", str_poly);
+	strcpy(arq_name, argv[2]);
+	printf("\n%s\n", arq_name);
+
+	new_poly = build_poly(strlen(str_poly), str_poly);
+
+	write_poly(new_poly, arq_name, new_poly.p);
 
 	return 0;
 }
@@ -53,12 +62,13 @@ POLY build_poly(int len, char* str_poly){
 	char c_coef[MAX_NUM_STR_SIZE];
 	char aux_poly[len];
 	double f_coef;
+	double * aux_coef;
 
 	max_pot = get_max_pot(len, str_poly);
-	new_poly.coef = (double*) calloc(max_pot, sizeof(double));
+	aux_coef = (double*) calloc(max_pot+1, sizeof(double));
 
 	strcpy(aux_poly, str_poly);
-
+  
 	i = len-1; //Começa na ultima potencia do polinomio e percorre ele de tras pra frente
 	
 	while(i>=0){
@@ -84,14 +94,16 @@ POLY build_poly(int len, char* str_poly){
 
 		if(aux_poly[i-1]=='-') f_coef*=-1;
 
-		new_poly.coef[pot] = f_coef;
+		aux_coef[pot] = f_coef;
 
 		i--; //Vai para a proxima potencia
 	}
 
 	strcpy(new_poly.code, "poly");
 	new_poly.p = max_pot;
+	new_poly.coef = aux_coef;
 
+	free(aux_coef);
 	return new_poly;
 }
 
@@ -102,9 +114,10 @@ int write_poly(POLY poly, char* name, int size){
 
 	if(poly_arq!=NULL){
 		fwrite(poly.code, sizeof(char), 4, poly_arq);
-		fwrite(poly.p, sizeof(int), 1, poly_arq);
+		fwrite(&poly.p, sizeof(int), 1, poly_arq);
 		fwrite(poly.coef, sizeof(double), size, poly_arq);
 	}
-
-
+	else{
+		printf("\n*!* Erro ao salvar arquivo *!*\n");
+	}
 }
