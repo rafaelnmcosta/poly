@@ -1,0 +1,8 @@
+/.vscode
+
+input
+output
+
+*.exe
+*.out
+teste.c
