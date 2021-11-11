@@ -12,6 +12,8 @@ int char_to_int(char c){
 int is_float(double num){
     double res;
 
+	if(num<0) num*=-1; // Transforma em positivo para fazer a subtração
+	
     res = num - (int)num;
     if(res>0) return 1;
     else return 0;
@@ -115,22 +117,17 @@ void build_poly(int len, char* str_poly, POLY * new_poly){
 			f_coef = atof(c_coef);
 		}
 
+		if(i>0 && str_poly[i]!='+' && str_poly[i]!='-'){
+			i--; // Vai para o sinal
+		}
+
+		if(str_poly[i]=='-') f_coef*=-1;
+
 		printf("\npot: %d\nfcoef: %.2lf\n", pot, f_coef);
 
+		new_poly->coef[pot] = f_coef;
 		if(i>0){
-
-			if(str_poly[i]!='+' && str_poly[i]!='-'){
-				i--; // Vai para o sinal
-			}
-
-			if(str_poly[i]=='-') f_coef*=-1;
-
-			new_poly->coef[pot] = f_coef;
-
 			i--; //Vai para a proxima potencia
-		}
-		else{
-			new_poly->coef[pot] = f_coef;
 		}
 	}
 
@@ -187,18 +184,33 @@ void show_poly(POLY poly){
     int i;
 
     i=poly.p;
-    if(is_float(poly.coef[i])){
-        printf("\n%.2fx^%d", poly.coef[i], i); // Imprime primeiro pelo coeficiente de maior potencia pois ele sempre sera diferente de 0
-    }
+    if(is_float(poly.coef[i])){ // Verifica se o numero tem casas decimais para imprimir (1.00 == 1)
+        printf("\n%.2f", poly.coef[i]); // Imprime primeiro pelo coeficiente de maior potencia pois ele sempre sera diferente de 0
+		
+		if(poly.p==1){ // Verifica se a potencia atual é 1, caso seja, imprime apenas x (x^1 == x)
+			printf("x");
+		}
+		else{
+			printf("x^%d", i);
+		}
+	}
     else{
-        printf("%dx^%d", (int)poly.coef[i], i);
+        printf("%d", (int)poly.coef[i]);
+		
+		if(poly.p==1){
+			printf("x");
+		}
+		else{
+			printf("x^%d", i);
+		}
     }
-    for(i=poly.p-1; i>0; i--){ // Segue imprimindo em ordem decrescente de potencias se o coeficiente não é nulo
+
+    for(i=poly.p-1; i>1; i--){ // Segue imprimindo em ordem decrescente de potencias se o coeficiente não é nulo
         if(poly.coef[i]!=0){
             if(poly.coef[i]>0){ // Verifica se o coef é positivo (negativos já carregam o sinal consigo)
                 printf("+");
             }
-            if(is_float(poly.coef[i])){ // Verifica se o numero tem casas decimais
+            if(is_float(poly.coef[i])){
                 printf("%.2lfx^%d", poly.coef[i], i);
             }
             else{
@@ -206,7 +218,20 @@ void show_poly(POLY poly){
             }
         }
     }
-    if(poly.coef[i]!=0){ // Imprime o ultimo numero separado pois ele não depende de x (x⁰==1)
+
+	if(poly.coef[i]!=0){ // Imprime a potencia x^1 separado para seguir o formato x^1 == x
+		if(poly.coef[i]>0){
+            printf("+");
+        }
+        if(is_float(poly.coef[i])){
+            printf("%.2lfx", poly.coef[i]);
+        }
+        else{
+            printf("%dx", (int)poly.coef[i]);
+        }
+		i--;
+	}
+    if(poly.coef[i]!=0){ // Imprime o ultimo numero sem x (5*x⁰ == 5*1 == 5)
         if(poly.coef[i]>0){
             printf("+");
         }
@@ -217,4 +242,7 @@ void show_poly(POLY poly){
             printf("%d\n", (int)poly.coef[i]);
         }
     }
+	else{ // Se não tem potencia x^0, então apenas imprime a quebra de linha
+		printf("\n");
+	}
 }
