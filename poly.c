@@ -9,6 +9,14 @@ int char_to_int(char c){
 	return conv;
 }
 
+int is_float(double num){
+    double res;
+
+    res = num - (int)num;
+    if(res>0) return 1;
+    else return 0;
+}
+
 int get_max_pot(int len, char* str_poly){
 	int i, max_pot, pot_cmp;
 
@@ -97,7 +105,28 @@ int write_poly(POLY poly, char* name, int size){
     fclose(poly_arq);
 }
 
-//--------------------------------------------------------------------------
+void read_poly(char * arq_name, POLY * poly){
+    
+    FILE * poly_arq;
+    
+    poly_arq = fopen(arq_name, "rb");
+
+    if(poly_arq==NULL){
+        printf("\n*!* Erro ao abrir arquivo *!*\n");
+        return;
+    }
+
+    fread(poly->code, sizeof(poly->code), 1, poly_arq);
+    if(strcmp(poly->code, "poly")){
+        printf("\n*!* O arquivo nao eh um polinomio *!*\n");
+        return;
+    }
+
+    fread(&poly->p, sizeof(int), 1, poly_arq);
+    
+    poly->coef = (double*) calloc(poly->p+1, sizeof(double));
+    fread(poly->coef, sizeof(double), poly->p+1, poly_arq);
+}
 
 void show_poly(POLY poly){
     int i;
@@ -133,12 +162,4 @@ void show_poly(POLY poly){
             printf("%d\n", (int)poly.coef[i]);
         }
     }
-}
-
-int is_float(double num){
-    double res;
-
-    res = num - (int)num;
-    if(res>0) return 1;
-    else return 0;
 }
