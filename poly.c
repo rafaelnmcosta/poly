@@ -247,8 +247,8 @@ void show_poly(POLY poly){
 			}
 			else printf("x");
         }
-		i--;
 	}
+	i--;
     if(poly.coef[i]!=0){ // Imprime o ultimo numero sem x (5*x⁰ == 5*1 == 5)
         if(poly.coef[i]>0){
             printf("+");
@@ -263,4 +263,36 @@ void show_poly(POLY poly){
 	else{ // Se não tem potencia x^0, então apenas imprime a quebra de linha
 		printf("\n");
 	}
+}
+
+void sum_poly(POLY poly1, POLY poly2, POLY * polyRes){
+    int i, max_pot, min_pot, big_poly;
+
+    if(poly1.p>=poly2.p){ //Encontra o poly de maior grau p/ definir o grau do resultado
+        max_pot = poly1.p;
+        min_pot = poly2.p; //guarda o grau do menor polinomio
+        big_poly = 1; // guarda qual dos polinomios é de maior grau
+    }
+    else{
+        max_pot = poly2.p;
+        min_pot = poly1.p;
+        big_poly = 2;
+    }
+
+    polyRes->coef = (double*) calloc(max_pot+1, sizeof(double));
+
+    for(i=0; i<=min_pot; i++){
+        polyRes->coef[i] = poly1.coef[i] + poly2.coef[i];
+    }
+
+    while(i<=max_pot){ // Continua percorrendo o maior polinomio até o final
+        if(big_poly==1){
+            polyRes->coef[i] = poly1.coef[i]; 
+        }
+        else polyRes->coef[i] = poly2.coef[i];
+        i++;
+    }
+
+    strcpy(polyRes->code, "poly");
+    polyRes->p = max_pot;
 }
