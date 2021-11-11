@@ -13,7 +13,7 @@ int is_float(double num){
     double res;
 
 	if(num<0) num*=-1; // Transforma em positivo para fazer a subtração
-	
+
     res = num - (int)num;
     if(res>0) return 1;
     else return 0;
@@ -195,8 +195,12 @@ void show_poly(POLY poly){
 		}
 	}
     else{
-        printf("%d", (int)poly.coef[i]);
-		
+		if(poly.coef[i]!=1){ // Verifica se o coef é 1 e caso seja imprime apenas x (1*x == x)
+        	if(poly.coef[i]!=-1){
+				printf("%d", (int)poly.coef[i]);
+			}
+			else printf("-"); //Se o coef é -1, imprime -x (-1*x == )
+		}
 		if(poly.p==1){
 			printf("x");
 		}
@@ -214,7 +218,15 @@ void show_poly(POLY poly){
                 printf("%.2lfx^%d", poly.coef[i], i);
             }
             else{
-                printf("%dx^%d", (int)poly.coef[i], i);
+				if(poly.coef[i]!=1){
+                	if(poly.coef[i]!=-1){
+						printf("%dx^%d", (int)poly.coef[i], i);
+					}
+					else printf("-x^%d", i); // Imprime -x^n se o coef é -1
+				}
+				else{
+					printf("x^%d", i); // Imprime apenas x^n se o coef é 1
+				}
             }
         }
     }
@@ -227,7 +239,13 @@ void show_poly(POLY poly){
             printf("%.2lfx", poly.coef[i]);
         }
         else{
-            printf("%dx", (int)poly.coef[i]);
+			if(poly.coef[i]!=1){
+				if(poly.coef[i]!=-1){
+            		printf("%dx", (int)poly.coef[i]);
+				}
+				else printf("-x");
+			}
+			else printf("x");
         }
 		i--;
 	}
