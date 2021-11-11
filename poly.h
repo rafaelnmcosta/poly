@@ -20,10 +20,9 @@ typedef struct {
 } POLY;
 
 int char_to_int(char c);
+int is_float(double num);
 int get_max_pot(int len, char* str_poly);
 void build_poly(int len, char* str_poly, POLY * new_poly);
 int write_poly(POLY poly, char* name, int size);
-void read_poly(char * arq_name, POLY * poly);
-
+int read_poly(char * arq_name, POLY * poly);
 void show_poly(POLY poly);
-int is_float(double num);

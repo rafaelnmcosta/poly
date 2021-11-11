@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]){
 	arq_name = (char*) calloc(strlen(argv[1]), sizeof(char));
     strcpy(arq_name, argv[1]);
 
-    read_poly(arq_name, &poly);
+    if(!read_poly(arq_name, &poly)) return 0;
     
     show_poly(poly);
 
