@@ -18,3 +18,11 @@ typedef struct {
 	int p;
 	double* coef;
 } POLY;
+
+int char_to_int(char c);
+int get_max_pot(int len, char* str_poly);
+void build_poly(int len, char* str_poly, POLY * new_poly);
+int write_poly(POLY poly, char* name, int size);
+
+void show_poly(POLY poly);
+int is_float(double num);
