@@ -6,12 +6,11 @@
 #define MAX_NUM_STR_SIZE 10 //Tamanho máximo de caracteres que um numero pode ter ao ser lido numa string 
 
 /**
- * Struct que define o formato de um polinomio e define que ser arquivo tem um cabeçalho identificador
- * code: string que armazena "poly" para indicar que o arquivo é um polinomio
+ * Struct que define o formato de um polinômio
+ * code: string "poly" que define o cabeçalho dos arquivos que armazenam polinômios
  * p: potência máxima do polinomio
  * coef: vetor que contem p doubles, representando os coficientes com potencia de acordo com a posição
- * 	ex: 2x²+4x+8 == coef=[8, 4, 2]
- * 					 8*x⁰ + 4*x¹ + 2*x²
+ * 	ex: 2x²+4x+8 == coef=[8, 4, 2] == 8*x⁰ + 4*x¹ + 2*x²
  **/
 typedef struct {
 	char code[ID_SIZE];
@@ -27,3 +26,4 @@ int write_poly(POLY poly, char* name, int size);
 int read_poly(char * arq_name, POLY * poly);
 void show_poly(POLY poly);
 void sum_poly(POLY poly1, POLY poly2, POLY * polyRes);
+void convert_poly(POLY * poly);

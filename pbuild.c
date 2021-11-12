@@ -4,6 +4,7 @@
 #include "poly.h"
 
 int main(int argc, char const *argv[]){
+
 	POLY new_poly;
 	char * str_poly;
 	char * arq_name;
