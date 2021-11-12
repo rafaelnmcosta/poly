@@ -36,7 +36,7 @@ int main(int argc, char const *argv[]){
 
     sum_poly(poly1, poly2, &polyRes);
 
-    write_poly(polyRes, res_name, polyRes.p+1);
+    write_poly(polyRes, res_name);
 
     free(polyRes.coef);
 

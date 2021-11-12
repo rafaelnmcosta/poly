@@ -111,7 +111,7 @@ void build_poly(int len, char* str_poly, POLY * new_poly){
 }
 
 
-int write_poly(POLY poly, char* name, int size){
+int write_poly(POLY poly, char* name){
 	FILE* poly_arq;
 
 	poly_arq = fopen(name, "wb");
@@ -119,7 +119,7 @@ int write_poly(POLY poly, char* name, int size){
 	if(poly_arq!=NULL){
 		fwrite(poly.code, sizeof(char), 4, poly_arq);
 		fwrite(&poly.p, sizeof(int), 1, poly_arq);
-		fwrite(poly.coef, sizeof(double), size, poly_arq);
+		fwrite(poly.coef, sizeof(double), poly.p+1, poly_arq);
 	}
 	else{
 		printf("\n*!* Erro ao salvar arquivo *!*\n");

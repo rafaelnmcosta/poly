@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]){
 
 	build_poly(strlen(str_poly), str_poly, &new_poly);
 
-	write_poly(new_poly, arq_name, new_poly.p+1);
+	write_poly(new_poly, arq_name);
 
 	free(new_poly.coef);
 
